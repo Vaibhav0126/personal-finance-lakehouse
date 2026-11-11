@@ -13,15 +13,19 @@ sys.path.append(spark.conf.get("bundle.sourcePath", "."))
 import dlt  # noqa: E402
 from transforms.cleaning import clean_transactions  # noqa: E402
 
+# Monee categories after normalize_category (trim + initcap), e.g. "Body care" -> "Body Care".
 KNOWN_CATEGORIES = (
-    "Food", "Beverages", "Housing", "Gift", "Body Care", "Leisure", "Vacation",
+    "Beverages", "Bicycle", "Body Care", "Car", "Clothes", "Electronics",
+    "Flight", "Food", "Gift", "Health", "Housing", "Leisure", "Local Transport",
+    "Long-distance Travel", "Miscellaneous", "Other Income", "Pet", "Sports",
+    "Vacation",
 )
 _known_sql = ", ".join(f"'{c}'" for c in KNOWN_CATEGORIES)
 
 SILVER_COLUMNS = [
-    "txn_id", "account_name", "person", "txn_date", "year_month", "category",
-    "description", "amount", "direction", "recurring", "payment_status",
-    "_source_file", "_ingested_at",
+    "txn_id", "source_txn_id", "account_name", "person", "txn_date", "txn_time",
+    "year_month", "category", "description", "amount", "direction", "recurring",
+    "payment_status", "_source_file", "_ingested_at",
 ]
 
 

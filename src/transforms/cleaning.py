@@ -12,9 +12,7 @@ from pyspark.sql.functions import (
     coalesce, col, concat_ws, expr, initcap, lit, sha2, trim, trunc, when,
 )
 
-# Source exports arrive in two date styles, one per person:
-#   Person A: "March 30, 2026"
-#   Person B: "30 March 2026"
+# Monee exports use "March 30, 2026"; "30 March 2026" is also accepted for robustness.
 _DATE_FORMATS = ("MMMM d yyyy", "d MMMM yyyy")
 
 
@@ -48,8 +46,13 @@ def normalize_description(df: DataFrame, col_name: str = "description") -> DataF
 
 
 def cast_amount(df: DataFrame, col_name: str = "amount") -> DataFrame:
-    """Cast to DECIMAL(12,2); unparseable amounts become NULL (-> quarantine)."""
-    return df.withColumn(col_name, expr(f"try_cast(`{col_name}` AS DECIMAL(12,2))"))
+    """Cast to DECIMAL(12,2); unparseable amounts become NULL (-> quarantine).
+
+    Monee exports amounts like "-¥1,940", so everything except digits, '-' and
+    '.' is stripped first.
+    """
+    digits = f"regexp_replace(`{col_name}`, '[^0-9.-]', '')"
+    return df.withColumn(col_name, expr(f"try_cast({digits} AS DECIMAL(12,2))"))
 
 
 def add_direction(df: DataFrame, amount_col: str = "amount") -> DataFrame:
@@ -65,7 +68,11 @@ def add_direction(df: DataFrame, amount_col: str = "amount") -> DataFrame:
 
 
 def add_txn_id(df: DataFrame) -> DataFrame:
-    """Deterministic id per transaction, used for de-duplication and matching."""
+    """Id per transaction, used for de-duplication and matching.
+
+    Prefers the source app's id (source_txn_id), so two genuinely identical
+    purchases stay separate. Falls back to a content hash when it is missing.
+    """
     key = concat_ws(
         "|",
         coalesce(col("person"), lit("")),
@@ -73,7 +80,11 @@ def add_txn_id(df: DataFrame) -> DataFrame:
         coalesce(col("description"), lit("")),
         coalesce(col("amount").cast("string"), lit("")),
     )
-    return df.withColumn("txn_id", sha2(key, 256))
+    hashed = sha2(key, 256)
+    if "source_txn_id" not in df.columns:
+        return df.withColumn("txn_id", hashed)
+    source_id = when(trim(col("source_txn_id")) == "", lit(None)).otherwise(trim(col("source_txn_id")))
+    return df.withColumn("txn_id", coalesce(source_id, hashed))
 
 
 def clean_transactions(df: DataFrame) -> DataFrame:

@@ -1,10 +1,11 @@
 # Personal Finance Lakehouse
 
 A Databricks lakehouse that two roommates use to track personal and shared
-spending. Each person exports expenses from their own app (in a different
-date format). The pipeline cleans and merges the exports, works out which
-purchases were split, flags items only one person logged, and uses a small
-ML model to catch mislabelled categories.
+spending. Each person exports expenses as CSV from the Monee app. The
+pipeline cleans and merges the exports, works out which purchases were
+split, flags items only one person logged, and uses a small ML model to
+catch mislabelled categories. For robustness, the date parser accepts both
+"August 31, 2026" and "31 August 2026" styles.
 
 Built with **Delta Live Tables, Auto Loader, Unity Catalog, MLflow** and
 deployed as a **Databricks Asset Bundle** with GitHub Actions CI/CD.
@@ -101,7 +102,7 @@ pytest -v
 
 | File | Covers |
 |---|---|
-| `tests/test_cleaning.py` | date parsing in both formats, ANSI-safe casts, trimming, credit/expense labelling, txn ids |
+| `tests/test_cleaning.py` | date parsing in both styles, yen amount parsing, ANSI-safe casts, trimming, credit/expense labelling, txn ids |
 | `tests/test_matching.py` | day-window matching, no double-matching, credits excluded, unshared detection |
 | `tests/test_promotion.py` | champion/challenger rule |
 | `tests/test_sample_data.py` | generator still produces every edge case |

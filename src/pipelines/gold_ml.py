@@ -22,6 +22,16 @@ MODEL_URI = spark.conf.get("pf.model_uri")  # models:/<catalog>.<schema>.<name>@
 _cached_model = None
 _model_missing = False
 
+_NOT_FOUND_CODES = {"RESOURCE_DOES_NOT_EXIST", "NOT_FOUND"}
+
+
+def _is_missing_model_error(exc) -> bool:
+    """True only for 'model or alias does not exist'; anything else is a real failure."""
+    if getattr(exc, "error_code", None) in _NOT_FOUND_CODES:
+        return True
+    msg = str(exc).lower()
+    return "alias" in msg and ("not found" in msg or "does not exist" in msg)
+
 
 def _get_model():
     """Load once per executor and cache. Returns None if no champion exists yet."""
@@ -29,6 +39,7 @@ def _get_model():
     if _cached_model is None and not _model_missing:
         import mlflow
         import mlflow.sklearn
+        from mlflow.exceptions import MlflowException
 
         # Executors don't inherit the driver's MLflow config: without both URIs
         # MLflow falls back to a local ./mlruns directory and crashes.
@@ -36,7 +47,10 @@ def _get_model():
         mlflow.set_registry_uri("databricks-uc")
         try:
             _cached_model = mlflow.sklearn.load_model(MODEL_URI)
-        except Exception:  # no registered model / alias yet
+        except MlflowException as exc:  # RestException is a subclass
+            if not _is_missing_model_error(exc):
+                raise
+            print(f"No champion model at {MODEL_URI}; predictions will be NULL. ({exc})")
             _model_missing = True
     return _cached_model
 

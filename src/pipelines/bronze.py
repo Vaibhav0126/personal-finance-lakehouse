@@ -25,9 +25,11 @@ def bronze_transactions():
             "Description as description",
             "Person as person",
             "Date as date_raw",
+            "Time as txn_time",
             "Amount as amount",
             "Recurring as recurring",
             "`Payment status` as payment_status",
+            "moneeTransactionID as source_txn_id",
             "_metadata.file_path as _source_file",
             "current_timestamp() as _ingested_at",
         )
