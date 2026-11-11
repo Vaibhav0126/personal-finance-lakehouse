@@ -88,11 +88,12 @@ resources:
               - --model-name=${var.model_name}
               - --experiment=${var.experiment_path}
               - --min-improvement=${var.min_improvement}
+              - --src-path=${workspace.file_path}/src
           environment_key: ml_env
       environments:
         - environment_key: ml_env
           spec:
-            client: "1"
+            environment_version: "4"
             dependencies:
               - mlflow
               - scikit-learn

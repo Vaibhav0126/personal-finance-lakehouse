@@ -15,20 +15,15 @@ import argparse
 import sys
 from pathlib import Path
 
-# Make src/ importable whether run on Databricks or locally.
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-
-import mlflow  # noqa: E402
-import mlflow.sklearn  # noqa: E402
-from mlflow import MlflowClient  # noqa: E402
-from pyspark.sql import SparkSession  # noqa: E402
-from sklearn.feature_extraction.text import TfidfVectorizer  # noqa: E402
-from sklearn.linear_model import LogisticRegression  # noqa: E402
-from sklearn.metrics import classification_report  # noqa: E402
-from sklearn.model_selection import train_test_split  # noqa: E402
-from sklearn.pipeline import Pipeline  # noqa: E402
-
-from ml.promotion import should_promote  # noqa: E402
+import mlflow
+import mlflow.sklearn
+from mlflow import MlflowClient
+from pyspark.sql import SparkSession
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 
 CHAMPION, CHALLENGER = "champion", "challenger"
 
@@ -41,6 +36,7 @@ def parse_args(argv=None):
     p.add_argument("--experiment", required=True)
     p.add_argument("--min-improvement", type=float, default=0.0)
     p.add_argument("--test-size", type=float, default=0.2)
+    p.add_argument("--src-path", default=None)
     return p.parse_args(argv)
 
 
@@ -65,6 +61,12 @@ def champion_accuracy(client, model_name, X_test, y_test):
 
 def main(argv=None):
     args = parse_args(argv)
+    # Serverless spark_python_task doesn't define __file__; the job passes --src-path.
+    src = args.src_path or str(Path(__file__).resolve().parents[1])
+    if src not in sys.path:
+        sys.path.insert(0, src)
+    from ml.promotion import should_promote
+
     spark = SparkSession.builder.getOrCreate()
     model_name = f"{args.catalog}.{args.schema}.{args.model_name}"
 
@@ -115,7 +117,7 @@ def main(argv=None):
         )
         info = mlflow.sklearn.log_model(
             sk_model=pipeline,
-            artifact_path="model",
+            name="model",
             signature=signature,
             registered_model_name=model_name,
         )
