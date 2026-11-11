@@ -43,8 +43,7 @@ A daily job (`pf_daily`) refreshes the pipeline, then retrains the model.
 | `gold_predicted_categories` | What category does the model predict for each expense? |
 | `gold_category_mismatches` | Where does the model disagree with the label? (mislabel or model gap) |
 
-<!-- Add a dashboard screenshot built on the SAMPLE data, not real data:
-![Dashboard](docs/dashboard.png) -->
+![Dashboard](docs/dashboard.png)
 
 ## Design decisions
 
