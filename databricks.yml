@@ -1,0 +1,109 @@
+# Databricks Asset Bundle for the personal finance lakehouse.
+#
+# Everything workspace-specific is a variable, so the same bundle deploys to
+# any workspace (including Databricks Free Edition). Auth comes from your CLI
+# profile or the DATABRICKS_HOST / DATABRICKS_TOKEN environment variables, so
+# no workspace URL is committed here.
+#
+#   databricks bundle validate
+#   databricks bundle deploy -t dev
+#   databricks bundle run pf_daily -t dev
+
+bundle:
+  name: personal-finance-lakehouse
+
+variables:
+  catalog:
+    description: Unity Catalog catalog that holds the schema
+    default: workspace          # Free Edition's default catalog
+  schema:
+    description: Schema for all pipeline tables, the landing volume and the model
+    default: finance
+  landing_volume:
+    description: UC volume where raw CSV exports are uploaded
+    default: landing
+  model_name:
+    description: Registered model name (inside catalog.schema)
+    default: category_classifier
+  experiment_path:
+    description: MLflow experiment path for training runs
+    default: /Shared/personal-finance-categorizer
+  min_improvement:
+    description: Accuracy gain a challenger needs over the champion to be promoted
+    default: "0.0"
+
+targets:
+  dev:
+    mode: development     # prefixes resource names with [dev <user>] and pauses schedules
+    default: true
+  prod:
+    mode: production
+
+resources:
+  pipelines:
+    pf_pipeline:
+      name: pf_lakehouse_pipeline
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      edition: ADVANCED          # needed for DLT expectations
+      serverless: true
+      channel: CURRENT
+      continuous: false
+      configuration:
+        bundle.sourcePath: ${workspace.file_path}/src
+        pf.landing_path: /Volumes/${var.catalog}/${var.schema}/${var.landing_volume}
+        pf.model_uri: models:/${var.catalog}.${var.schema}.${var.model_name}@champion
+        pf.shared_match_days: "3"
+      libraries:
+        - file:
+            path: src/pipelines/bronze.py
+        - file:
+            path: src/pipelines/silver.py
+        - file:
+            path: src/pipelines/gold.py
+        - file:
+            path: src/pipelines/gold_ml.py
+
+  jobs:
+    pf_daily:
+      name: pf_daily_refresh_and_retrain
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"   # 06:00 every day
+        timezone_id: Asia/Tokyo
+      tasks:
+        # 1. Ingest new CSVs and rebuild silver/gold (scores with the current champion).
+        - task_key: refresh_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pf_pipeline.id}
+
+        # 2. Retrain on the fresh silver table; promote only if it beats the champion.
+        - task_key: train_and_gate
+          depends_on:
+            - task_key: refresh_pipeline
+          spark_python_task:
+            python_file: src/ml/train_categorizer.py
+            parameters:
+              - --catalog=${var.catalog}
+              - --schema=${var.schema}
+              - --model-name=${var.model_name}
+              - --experiment=${var.experiment_path}
+              - --min-improvement=${var.min_improvement}
+          environment_key: ml_env
+      environments:
+        - environment_key: ml_env
+          spec:
+            client: "1"
+            dependencies:
+              - mlflow
+              - scikit-learn
+              - pandas
+
+  # Lakeview dashboard: export your existing dashboard into the bundle with
+  #   databricks bundle generate dashboard --existing-id <dashboard-id>
+  # then uncomment and point file_path at the generated .lvdash.json.
+  #
+  # dashboards:
+  #   pf_dashboard:
+  #     display_name: Personal Finance
+  #     file_path: src/dashboards/personal_finance.lvdash.json
+  #     warehouse_id: ${var.warehouse_id}

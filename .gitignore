@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Databricks bundle state (contains workspace-specific terraform state)
+.databricks/
+
+# Data: never commit real exports, only the generated samples
+data/*
+!data/sample/
+!data/sample/*.csv

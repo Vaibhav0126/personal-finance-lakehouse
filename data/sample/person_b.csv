@@ -1,0 +1,73 @@
+Account name,Category,Description,Person,Date,Amount,Recurring,Payment status
+Person B Wallet,Housing,Rent,Person B,5 January 2026,-24515.00,Yes,Paid
+Person B Wallet,Housing,Electricity,Person B,1 January 2026,-2743.00,Yes,Paid
+Person B Wallet,Housing,Internet,Person B,3 January 2026,-1398.00,Yes,Paid
+Person B Wallet,Food,Dinner out,Person B,16 January 2026,-2175.00,No,Paid
+Person B Wallet,Housing,Toilet paper and detergent,Person B,21 January 2026,-450.00,No,Paid
+Person B Wallet,Leisure,Netflix,Person B,19 January 2026,-745.00,No,Paid
+Person B Wallet,Food,Weekly groceries,Person B,10 January 2026,-2338.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,12 January 2026,-984.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,2 January 2026,-1009.00,No,Paid
+Person B Wallet,Body Care,Shampoo,Person B,24 January 2026,-973.00,No,Paid
+Person B Wallet,Leisure,Gym day pass,Person B,3 January 2026,-1083.00,No,Paid
+Person B Wallet,Leisure,Karaoke,Person B,9 January 2026,-2825.00,No,Paid
+Person B Wallet,Leisure,Karaoke,Person B,9 January 2026,-2560.00,No,Paid
+Person B Wallet,Body Care,Haircut,Person B,8 January 2026,-3226.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,8 January 2026,-515.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,27 January 2026,-1195.00,No,Paid
+Person B Wallet,Body Care,Haircut,Person B,1 January 2026,-3219.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,20 January 2026,-4265.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,15 January 2026,-575.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,13 January 2026,-3596.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,21 January 2026,-1100.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,7 January 2026,-460.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,20 January 2026,-926.00,No,Paid
+Person B Wallet,Food,Convenience store,Person B,5 January 2026,-622.00,No,Paid
+Person B Wallet,Housing,Rent,Person B,3 February 2026,-23012.00,Yes,Paid
+Person B Wallet,Housing,Electricity,Person B,6 February 2026,-2926.00,Yes,Paid
+Person B Wallet,Housing,Internet,Person B,3 February 2026,-1403.00,Yes,Paid
+Person B Wallet,Housing,Toilet paper and detergent,Person B,16 February 2026,-594.00,No,Paid
+Person B Wallet,Food,Dinner out,Person B,24 February 2026,-2662.00,No,Paid
+Person B Wallet,Leisure,Netflix,Person B,8 February 2026,-745.00,No,Paid
+Person B Wallet,Food,Weekly groceries,Person B,25 February 2026,-2556.00,No,Paid
+Person B Wallet,Food,Lunch bento,Person B,19 February 2026,-1148.00,No,Paid
+Person B Wallet,Beverages,Bubble tea,Person B,22 February 2026,-734.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,1 February 2026,-354.00,No,Paid
+Person B Wallet,Food,Convenience store,Person B,24 February 2026,-860.00,No,Paid
+Person B Wallet,Leisure,Cinema,Person B,27 February 2026,-2162.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,7 February 2026,-1046.00,No,Paid
+Person B Wallet,Beverages,Bubble tea,Person B,9 February 2026,-636.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,24 February 2026,-438.00,No,Paid
+Person B Wallet,Leisure,Karaoke,Person B,19 February 2026,-2723.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,27 February 2026,-5671.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,18 February 2026,-2607.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,28 February 2026,-3760.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,25 February 2026,-550.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,16 February 2026,-505.00,No,Paid
+Person B Wallet,Housing,Rent,Person B,3 March 2026,-22754.00,Yes,Paid
+Person B Wallet,Housing,Electricity,Person B,5 March 2026,-3018.00,Yes,Paid
+Person B Wallet,Housing,Internet,Person B,6 March 2026,-1253.00,Yes,Paid
+Person B Wallet,Food,Dinner out,Person B,19 March 2026,-2070.00,No,Paid
+Person B Wallet,Housing,Toilet paper and detergent,Person B,25 March 2026,-511.00,No,Paid
+Person B Wallet,Housing,Toilet paper and detergent,Person B,25 March 2026,-609.00,No,Paid
+Person B Wallet,Food,Dinner out,Person B,6 March 2026,-3042.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,1 March 2026,-1217.00,No,Paid
+Person B Wallet,Body Care,Shampoo,Person B,20 March 2026,-1399.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,28 March 2026,-961.00,No,Paid
+Person B Wallet,Food,Ramen,Person B,18 March 2026,-1109.00,No,Paid
+Person B Wallet,Body Care,Shampoo,Person B,2 March 2026,-1169.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,6 March 2026,-415.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,10 March 2026,-507.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,10 March 2026,-3783.00,No,Paid
+Person B Wallet,Beverages,Bubble tea,Person B,12 March 2026,-701.00,No,Paid
+Person B Wallet,Body Care,Shampoo,Person B,1 March 2026,-813.00,No,Paid
+Person B Wallet,Gift,Birthday gift,Person B,17 March 2026,-3899.00,No,Paid
+Person B Wallet,Leisure,Cinema,Person B,22 March 2026,-2146.00,No,Paid
+Person B Wallet,Leisure,Karaoke,Person B,16 March 2026,-2319.00,No,Paid
+Person B Wallet,Leisure,Karaoke,Person B,10 March 2026,-2532.00,No,Paid
+Person B Wallet,Beverages,Bubble tea,Person B,7 March 2026,-708.00,No,Paid
+Person B Wallet,Beverages,Bubble tea,Person B,12 March 2026,-745.00,No,Paid
+Person B Wallet,Beverages,Coffee,Person B,3 March 2026,-506.00,No,Paid
+Person B Wallet,Body Care,Haircut,Person B,6 March 2026,-3083.00,No,Paid
+Person B Wallet,Leisure,Concert refund,Person B,11 January 2026,5500.00,No,Paid
+Person B Wallet,Food,Mystery,Person B,sometime in March,-300.00,No,Paid
